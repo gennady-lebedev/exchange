@@ -46,7 +46,9 @@ public class DiscreteAuction {
         BigInteger amount = order.getAmount();
 
         if(orders.containsKey(price)) {
-            amount = amount.add(orders.get(price));
+            BigInteger current = orders.get(price);
+            log.trace("Stack amount {} and {} by price {}", amount, current, price);
+            amount = amount.add(current);
         }
         orders.put(price, amount);
     }
@@ -68,6 +70,7 @@ public class DiscreteAuction {
             BigInteger buyCount = buyCumulative.get(buyPrice);
             deals.rememberDeal(buyPrice, sellPrice, buyCount.min(sellCount));
         }
+        log.trace("Possible deals: {}", deals);
         return deals;
     }
 
@@ -83,6 +86,9 @@ public class DiscreteAuction {
             }
         }
 
+        log.trace("Sell orders grouped by price: {}", sellOrders);
+        log.trace("Sell cumulative: {}", sellCumulative);
+
         for(BigDecimal price: buyOrders.descendingKeySet()) {
             BigInteger amount = buyOrders.get(price);
             BigDecimal tailPrice = buyOrders.higherKey(price);
@@ -93,6 +99,9 @@ public class DiscreteAuction {
                 buyCumulative.put(price, amount);
             }
         }
+
+        log.trace("Buy orders grouped by price: {}", buyOrders);
+        log.trace("Buy cumulative: {}", buyCumulative);
     }
 
     public boolean exchangePossible() {
