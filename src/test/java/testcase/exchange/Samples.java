@@ -11,7 +11,7 @@ public class Samples {
 
     @Test
     public void firstSample() {
-        DiscreteAuction auction = new DiscreteAuction();
+        Auction auction = new Auction();
         auction.addBuyOrder(new Order("10.00", "100"));
         auction.addSellOrder(new Order("10.10", "150"));
         assertFalse(auction.exchangePossible());
@@ -19,7 +19,7 @@ public class Samples {
 
     @Test
     public void secondSample() {
-        DiscreteAuction auction = new DiscreteAuction();
+        Auction auction = new Auction();
         auction.addBuyOrder(new Order("15.40", "100"));
         auction.addBuyOrder(new Order("15.30", "100"));
         auction.addSellOrder(new Order("15.30", "150"));
@@ -30,7 +30,7 @@ public class Samples {
 
     @Test
     public void multipleOptimalPrices() {
-        DiscreteAuction auction = new DiscreteAuction();
+        Auction auction = new Auction();
         auction.addBuyOrder(new Order("10", "100"));
         auction.addBuyOrder(new Order("20", "100"));
         auction.addBuyOrder(new Order("30", "100"));
@@ -50,7 +50,7 @@ public class Samples {
 
     @Test
     public void ridiculousPricesAndAmounts() {
-        DiscreteAuction auction = new DiscreteAuction();
+        Auction auction = new Auction();
         auction.addBuyOrder(new Order("1", "1000"));
         auction.addBuyOrder(new Order("10", "1"));
         auction.addBuyOrder(new Order("100", "1000"));
@@ -64,7 +64,7 @@ public class Samples {
 
     @Test
     public void crossedRangesOfPrices() {
-        DiscreteAuction auction = new DiscreteAuction();
+        Auction auction = new Auction();
         auction.addBuyOrder(new Order("1", "100"));
         auction.addBuyOrder(new Order("10", "100"));
         auction.addBuyOrder(new Order("20", "100"));
@@ -81,12 +81,12 @@ public class Samples {
 
     @Test
     public void over9000() {
-        DiscreteAuction auction = new DiscreteAuction();
-        for(int i = 0; i < DiscreteAuction.ORDERS_LIMIT;) {
+        Auction auction = new Auction();
+        for(int i = 0; i < Auction.ORDERS_LIMIT;) {
             BigDecimal price = BigDecimal.ONE;
             BigDecimal inc = new BigDecimal("0.01");
             String amount = "1000";
-            for(int j = 0; j < 9900 && i < DiscreteAuction.ORDERS_LIMIT; j++,i+=2) {
+            for(int j = 0; j < 9900 && i < Auction.ORDERS_LIMIT; j++,i+=2) {
                 price = price.add(inc);
                 auction.addBuyOrder(new Order(price.toString(), amount));
                 auction.addSellOrder(new Order(price.toString(), amount));

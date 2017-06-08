@@ -11,15 +11,15 @@ import java.math.BigInteger;
 
 import static org.junit.Assert.*;
 
-public class DiscreteAuctionTest {
+public class AuctionTest {
     @Rule
     public ExpectedException thrown = ExpectedException.none();
 
-    private DiscreteAuction auction;
+    private Auction auction;
 
     @Before
     public void before() {
-        auction = new DiscreteAuction();
+        auction = new Auction();
     }
 
     @Test
@@ -63,7 +63,7 @@ public class DiscreteAuctionTest {
 
     @Test
     public void totalAmountOfOrdersCouldBeLessThanLimit() {
-        for(int i = 0; i < DiscreteAuction.ORDERS_LIMIT; i++) {
+        for(int i = 0; i < Auction.ORDERS_LIMIT; i++) {
             auction.addBuyOrder(new Order("1", "1"));
         }
     }
@@ -71,7 +71,7 @@ public class DiscreteAuctionTest {
     @Test
     public void totalAmountOfOrdersShouldNotBeMoreThanLimit() {
         thrown.expect(OrderLimitException.class);
-        for(int i = 0; i < DiscreteAuction.ORDERS_LIMIT; i++) {
+        for(int i = 0; i < Auction.ORDERS_LIMIT; i++) {
             auction.addBuyOrder(new Order("1", "1"));
         }
         auction.addSellOrder(new Order("1", "1"));

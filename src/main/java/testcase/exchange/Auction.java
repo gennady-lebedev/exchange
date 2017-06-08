@@ -11,8 +11,8 @@ import java.util.NavigableMap;
 import java.util.TreeMap;
 
 @Getter
-public class DiscreteAuction {
-    private static final Logger log = LoggerFactory.getLogger(DiscreteAuction.class);
+public class Auction {
+    private static final Logger log = LoggerFactory.getLogger(Auction.class);
 
     public static final int ORDERS_LIMIT = 1000000;
 
@@ -24,7 +24,7 @@ public class DiscreteAuction {
     private int total = 0;
 
 
-    public DiscreteAuction() {
+    public Auction() {
         this.buyOrders = new TreeMap<>();
         this.buyCumulative = new TreeMap<>();
         this.sellOrders = new TreeMap<>();
