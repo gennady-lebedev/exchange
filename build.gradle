@@ -13,6 +13,10 @@ repositories {
 
 mainClassName = "testcase.exchange.Application"
 
+run {
+    standardInput = System.in
+}
+
 dependencies {
     compile "ch.qos.logback:logback-classic:1.1.11"
     compile "ch.qos.logback:logback-core:1.1.11"
