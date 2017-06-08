@@ -60,7 +60,6 @@ public class Auction {
         Cumulative cumulative = new Cumulative(buyOrders, sellOrders);
         PossibleDeals deals = new PossibleDeals(cumulative);
         log.trace("Possible deals: {}", deals);
-        deals.findOptimalPrice();
         log.debug("Optimal prise is {} with max amount {}", deals.getOptimalPrice(), deals.getMaxAmount());
         return deals;
     }

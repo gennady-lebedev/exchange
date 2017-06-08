@@ -28,9 +28,10 @@ public class PossibleDeals {
             BigInteger buyCount = buyCumulative.get(buyPrice);
             rememberDeal(buyPrice, sellPrice, buyCount.min(sellCount));
         }
+        findOptimalPrice();
     }
 
-    public void rememberDeal(BigDecimal buyPrice, BigDecimal sellPrice, BigInteger amount) {
+    private void rememberDeal(BigDecimal buyPrice, BigDecimal sellPrice, BigInteger amount) {
         mergeDeals(buyPrice, amount);
         if(!buyPrice.equals(sellPrice)) {
             mergeDeals(sellPrice, amount);
@@ -46,7 +47,7 @@ public class PossibleDeals {
         }
     }
 
-    public void findOptimalPrice() {
+    private void findOptimalPrice() {
         BigDecimal minPrice = BigDecimal.ZERO;
         BigDecimal maxPrice = BigDecimal.ZERO;
         for(BigDecimal price: deals.navigableKeySet()) {
