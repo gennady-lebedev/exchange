@@ -69,6 +69,7 @@ public class Samples {
         auction.addBuyOrder(new Order("10", "100"));
         auction.addBuyOrder(new Order("20", "100"));
         auction.addBuyOrder(new Order("50", "100"));
+
         auction.addSellOrder(new Order("20", "100"));
         auction.addSellOrder(new Order("50", "100"));
         auction.addSellOrder(new Order("80", "100"));
@@ -76,6 +77,23 @@ public class Samples {
         PossibleDeals possibleDeals = auction.exchange();
         assertEquals(new BigDecimal("35.00"), possibleDeals.getOptimalPrice());
         assertEquals(new BigInteger("100"), possibleDeals.getMaxAmount());
+    }
+
+    @Test
+    public void crossedRangesOfPrices2() {
+        Auction auction = new Auction();
+        auction.addSellOrder(new Order("1", "100"));
+        auction.addSellOrder(new Order("10", "100"));
+        auction.addSellOrder(new Order("20", "100"));
+        auction.addSellOrder(new Order("50", "100"));
+
+        auction.addBuyOrder(new Order("20", "100"));
+        auction.addBuyOrder(new Order("50", "100"));
+        auction.addBuyOrder(new Order("80", "100"));
+        auction.addBuyOrder(new Order("100", "100"));
+        PossibleDeals possibleDeals = auction.exchange();
+        assertEquals(new BigDecimal("35.00"), possibleDeals.getOptimalPrice());
+        assertEquals(new BigInteger("300"), possibleDeals.getMaxAmount());
     }
 
 

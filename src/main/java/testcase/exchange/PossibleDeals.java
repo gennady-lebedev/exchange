@@ -21,7 +21,7 @@ public class PossibleDeals {
         NavigableMap<BigDecimal, BigInteger> buyCumulative = cumulative.getBuyCumulative();
         NavigableMap<BigDecimal, BigInteger> sellCumulative = cumulative.getSellCumulative();
 
-        for(BigDecimal buyPrice: buyCumulative.navigableKeySet()) {
+        for(BigDecimal buyPrice: buyCumulative.tailMap(sellCumulative.firstKey(), true).keySet()) {
             BigDecimal sellPrice = sellCumulative.floorKey(buyPrice);
             if(sellPrice == null) continue;
             BigInteger sellCount = sellCumulative.get(sellPrice);
