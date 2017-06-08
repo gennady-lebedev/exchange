@@ -44,6 +44,7 @@ public class DiscreteAuctionTest {
         DealService deals = auction.exchange();
         DealService mock = new DealService();
         mock.rememberDeal(new BigDecimal("10.00"), new BigDecimal("10.00"), new BigInteger("100"));
+        mock.findOptimalPrice();
         assertEquals("Same sell and buy orders should meet a deal", mock, deals);
     }
 
@@ -56,10 +57,6 @@ public class DiscreteAuctionTest {
         auction.addBuyOrder(new Order("30.00", "5"));
         DealService deals = auction.exchange();
 
-        DealService mock = new DealService();
-        mock.rememberDeal(new BigDecimal("25.00"), new BigDecimal("20.00"), new BigInteger("20"));
-        mock.rememberDeal(new BigDecimal("30.00"), new BigDecimal("20.00"), new BigInteger("5"));
-        assertEquals("Can't buy 10x10 and 20x10 with 25x20", mock, deals);
         assertEquals("Optimal price calculated incorrect", new BigDecimal("22.50"), deals.getOptimalPrice());
         assertEquals("Maximum amount incorrect", new BigInteger("20"), deals.getMaxAmount());
     }

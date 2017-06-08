@@ -71,6 +71,8 @@ public class DiscreteAuction {
             deals.rememberDeal(buyPrice, sellPrice, buyCount.min(sellCount));
         }
         log.trace("Possible deals: {}", deals);
+        deals.findOptimalPrice();
+        log.debug("Optimal prise is {} with max amount {}", deals.getOptimalPrice(), deals.getMaxAmount());
         return deals;
     }
 
