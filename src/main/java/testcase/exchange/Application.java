@@ -46,6 +46,8 @@ public class Application {
             auction.addSellOrder(parseOrder(line));
         } else if(line.matches("[Bb] \\d+ \\d+(.\\d+)?")) {
             auction.addBuyOrder(parseOrder(line));
+        } else if(line.matches("\\s*")) {
+            return null;
         } else {
             System.out.println("Can't parse, please try again");
         }
