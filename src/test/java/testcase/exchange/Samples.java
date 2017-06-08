@@ -29,6 +29,28 @@ public class Samples {
     }
 
     @Test
+    public void minMax() {
+        Auction auction = new Auction();
+        auction.addSellOrder(new Order("1", "100"));
+        auction.addSellOrder(new Order("10", "100"));
+        auction.addBuyOrder(new Order("100", "100"));
+        PossibleDeals possibleDeals = auction.exchange();
+        assertEquals(new BigDecimal("55.00"), possibleDeals.getOptimalPrice());
+        assertEquals(new BigInteger("100"), possibleDeals.getMaxAmount());
+    }
+
+    @Test
+    public void maxMin() {
+        Auction auction = new Auction();
+        auction.addSellOrder(new Order("1", "100"));
+        auction.addBuyOrder(new Order("10", "100"));
+        auction.addBuyOrder(new Order("100", "100"));
+        PossibleDeals possibleDeals = auction.exchange();
+        assertEquals(new BigDecimal("50.50"), possibleDeals.getOptimalPrice());
+        assertEquals(new BigInteger("100"), possibleDeals.getMaxAmount());
+    }
+
+    @Test
     public void multipleOptimalPrices() {
         Auction auction = new Auction();
         auction.addBuyOrder(new Order("10", "100"));
