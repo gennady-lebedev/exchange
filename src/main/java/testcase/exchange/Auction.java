@@ -17,18 +17,14 @@ public class Auction {
     public static final int ORDERS_LIMIT = 1000000;
 
     private final NavigableMap<BigDecimal, BigInteger> buyOrders;
-    private final NavigableMap<BigDecimal, BigInteger> buyCumulative;
     private final NavigableMap<BigDecimal, BigInteger> sellOrders;
-    private final NavigableMap<BigDecimal, BigInteger> sellCumulative;
 
     private int total = 0;
 
 
     public Auction() {
         this.buyOrders = new TreeMap<>();
-        this.buyCumulative = new TreeMap<>();
         this.sellOrders = new TreeMap<>();
-        this.sellCumulative = new TreeMap<>();
     }
 
     public void addSellOrder(Order order) {
@@ -60,50 +56,13 @@ public class Auction {
         total++;
     }
 
-    public DealService exchange() {
-        countCumulative();
-        DealService deals = new DealService();
-        for(BigDecimal buyPrice: buyCumulative.navigableKeySet()) {
-            BigDecimal sellPrice = sellCumulative.floorKey(buyPrice);
-            if(sellPrice == null) continue;
-            BigInteger sellCount = sellCumulative.get(sellPrice);
-            BigInteger buyCount = buyCumulative.get(buyPrice);
-            deals.rememberDeal(buyPrice, sellPrice, buyCount.min(sellCount));
-        }
+    public PossibleDeals exchange() {
+        Cumulative cumulative = new Cumulative(buyOrders, sellOrders);
+        PossibleDeals deals = new PossibleDeals(cumulative);
         log.trace("Possible deals: {}", deals);
         deals.findOptimalPrice();
         log.debug("Optimal prise is {} with max amount {}", deals.getOptimalPrice(), deals.getMaxAmount());
         return deals;
-    }
-
-    private void countCumulative() {
-        for(BigDecimal price: sellOrders.navigableKeySet()) {
-            BigInteger amount = sellOrders.get(price);
-            BigDecimal headPrice = sellOrders.lowerKey(price);
-            if(headPrice != null) {
-                BigInteger headAmount = sellCumulative.get(headPrice);
-                sellCumulative.put(price, amount.add(headAmount));
-            } else {
-                sellCumulative.put(price, amount);
-            }
-        }
-
-        log.trace("Sell orders grouped by price: {}", sellOrders);
-        log.trace("Sell cumulative: {}", sellCumulative);
-
-        for(BigDecimal price: buyOrders.descendingKeySet()) {
-            BigInteger amount = buyOrders.get(price);
-            BigDecimal tailPrice = buyOrders.higherKey(price);
-            if(tailPrice != null) {
-                BigInteger tailAmount = buyCumulative.get(tailPrice);
-                buyCumulative.put(price, amount.add(tailAmount));
-            } else {
-                buyCumulative.put(price, amount);
-            }
-        }
-
-        log.trace("Buy orders grouped by price: {}", buyOrders);
-        log.trace("Buy cumulative: {}", buyCumulative);
     }
 
     public boolean exchangePossible() {

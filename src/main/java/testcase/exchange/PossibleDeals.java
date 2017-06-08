@@ -12,10 +12,23 @@ import java.util.TreeMap;
 @Getter
 @EqualsAndHashCode
 @ToString
-public class DealService {
+public class PossibleDeals {
     private final NavigableMap<BigDecimal, BigInteger> deals = new TreeMap<>();
     private BigDecimal optimalPrice = BigDecimal.ZERO;
     private BigInteger maxAmount = BigInteger.ZERO;
+
+    public PossibleDeals(Cumulative cumulative) {
+        NavigableMap<BigDecimal, BigInteger> buyCumulative = cumulative.getBuyCumulative();
+        NavigableMap<BigDecimal, BigInteger> sellCumulative = cumulative.getSellCumulative();
+
+        for(BigDecimal buyPrice: buyCumulative.navigableKeySet()) {
+            BigDecimal sellPrice = sellCumulative.floorKey(buyPrice);
+            if(sellPrice == null) continue;
+            BigInteger sellCount = sellCumulative.get(sellPrice);
+            BigInteger buyCount = buyCumulative.get(buyPrice);
+            rememberDeal(buyPrice, sellPrice, buyCount.min(sellCount));
+        }
+    }
 
     public void rememberDeal(BigDecimal buyPrice, BigDecimal sellPrice, BigInteger amount) {
         mergeDeals(buyPrice, amount);

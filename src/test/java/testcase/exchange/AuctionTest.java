@@ -41,11 +41,9 @@ public class AuctionTest {
         Order order = new Order("10.00", "100");
         auction.addSellOrder(order);
         auction.addBuyOrder(order);
-        DealService deals = auction.exchange();
-        DealService mock = new DealService();
-        mock.rememberDeal(new BigDecimal("10.00"), new BigDecimal("10.00"), new BigInteger("100"));
-        mock.findOptimalPrice();
-        assertEquals("Same sell and buy orders should meet a deal", mock, deals);
+        PossibleDeals deals = auction.exchange();
+        assertEquals("Equal sell and buy orders should meet a deal", new BigDecimal("10.00"), deals.getOptimalPrice());
+        assertEquals("Equal sell and buy orders should meet a deal", new BigInteger("100"), deals.getMaxAmount());
     }
 
     @Test
@@ -55,7 +53,7 @@ public class AuctionTest {
 
         auction.addBuyOrder(new Order("25.00", "15"));
         auction.addBuyOrder(new Order("30.00", "5"));
-        DealService deals = auction.exchange();
+        PossibleDeals deals = auction.exchange();
 
         assertEquals("Optimal price calculated incorrect", new BigDecimal("22.50"), deals.getOptimalPrice());
         assertEquals("Maximum amount incorrect", new BigInteger("20"), deals.getMaxAmount());

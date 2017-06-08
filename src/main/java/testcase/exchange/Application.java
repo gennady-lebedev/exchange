@@ -8,7 +8,7 @@ public class Application {
     public static void main(String[] args) {
         printGreeting();
         Auction auction = new Auction();
-        DealService deals = parseInput(auction);
+        PossibleDeals deals = parseInput(auction);
         if(deals.getMaxAmount().equals(BigInteger.ZERO)) {
             System.out.println("0 n/a");
         } else {
@@ -25,11 +25,11 @@ public class Application {
         System.out.println("Then type 'exchange', service will calculate optimal price");
     }
 
-    private static DealService parseInput(Auction auction) {
+    private static PossibleDeals parseInput(Auction auction) {
         Scanner scan = new Scanner(System.in);
         String line;
         while ((line = scan.nextLine()) != null) {
-            DealService deals = parseLine(line, auction);
+            PossibleDeals deals = parseLine(line, auction);
             if(deals != null)
                 return deals;
         }
@@ -37,7 +37,7 @@ public class Application {
         return null;
     }
 
-    private static DealService parseLine(String line, Auction auction) {
+    private static PossibleDeals parseLine(String line, Auction auction) {
         if(line.equalsIgnoreCase("exit") || line.equalsIgnoreCase("quit")) {
             System.exit(1);
         } else if(line.equalsIgnoreCase("exchange")) {
