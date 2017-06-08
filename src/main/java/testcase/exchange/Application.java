@@ -1,5 +1,7 @@
 package testcase.exchange;
 
+import testcase.exchange.error.ExchangeException;
+
 import java.math.BigInteger;
 import java.util.Scanner;
 
@@ -38,19 +40,24 @@ public class Application {
     }
 
     private static PossibleDeals parseLine(String line, Auction auction) {
-        if(line.equalsIgnoreCase("exit") || line.equalsIgnoreCase("quit")) {
-            System.exit(1);
-        } else if(line.equalsIgnoreCase("exchange")) {
-            return auction.exchange();
-        } else if(line.matches("[Ss] \\d+ \\d+(.\\d+)?")) {
-            auction.addSellOrder(parseOrder(line));
-        } else if(line.matches("[Bb] \\d+ \\d+(.\\d+)?")) {
-            auction.addBuyOrder(parseOrder(line));
-        } else if(line.matches("\\s*")) {
-            return null;
-        } else {
-            System.out.println("Can't parse, please try again");
+        try {
+            if(line.equalsIgnoreCase("exit") || line.equalsIgnoreCase("quit")) {
+                System.exit(1);
+            } else if(line.equalsIgnoreCase("exchange")) {
+                return auction.exchange();
+            } else if(line.matches("[Ss] \\d+ \\d+(.\\d+)?")) {
+                auction.addSellOrder(parseOrder(line));
+            } else if(line.matches("[Bb] \\d+ \\d+(.\\d+)?")) {
+                auction.addBuyOrder(parseOrder(line));
+            } else if(line.matches("\\s*")) {
+                return null;
+            } else {
+                System.out.println("Can't parse, please try again");
+            }
+        } catch (ExchangeException e) {
+            System.out.println(e.getMessage() + ", please try again");
         }
+
         return null;
     }
 
