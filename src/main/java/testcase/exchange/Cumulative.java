@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.ToString;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import testcase.exchange.error.ExchangeException;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -31,6 +32,9 @@ public class Cumulative {
     }
 
     private NavigableMap<BigDecimal, BigInteger> accumulateBuyOrders(NavigableMap<BigDecimal, BigInteger> buyOrders) {
+        if(buyOrders.size() == 0) {
+            throw new ExchangeException("No buy orders to accumulate");
+        }
         NavigableMap<BigDecimal, BigInteger> buyCumulative = new TreeMap<>();
         for(BigDecimal price: buyOrders.descendingKeySet()) {
             BigInteger amount = buyOrders.get(price);
@@ -46,6 +50,9 @@ public class Cumulative {
     }
 
     private NavigableMap<BigDecimal, BigInteger> accumulateSellOrders(NavigableMap<BigDecimal, BigInteger> sellOrders) {
+        if(sellOrders.size() == 0) {
+            throw new ExchangeException("No sell orders to accumulate");
+        }
         NavigableMap<BigDecimal, BigInteger> sellCumulative = new TreeMap<>();
         for(BigDecimal price: sellOrders.navigableKeySet()) {
             BigInteger amount = sellOrders.get(price);
