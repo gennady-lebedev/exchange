@@ -7,7 +7,7 @@
         </encoder>
     </appender>
 
-    <logger name="testcase.exchange" level="TRACE"/>
+    <logger name="testcase.exchange" level="DEBUG"/>
 
     <root level="INFO">
         <appender-ref ref="STDOUT" />
