@@ -49,6 +49,37 @@ public class Samples {
     }
 
     @Test
+    public void ridiculousPricesAndAmounts() {
+        DiscreteAuction auction = new DiscreteAuction();
+        auction.addBuyOrder(new Order("1", "1000"));
+        auction.addBuyOrder(new Order("10", "1"));
+        auction.addBuyOrder(new Order("100", "1000"));
+        auction.addSellOrder(new Order("1", "1000"));
+        auction.addSellOrder(new Order("10", "1"));
+        auction.addSellOrder(new Order("100", "1000"));
+        DealService dealService = auction.exchange();
+        assertEquals(new BigDecimal("10.00"), dealService.getOptimalPrice());
+        assertEquals(new BigInteger("1001"), dealService.getMaxAmount());
+    }
+
+    @Test
+    public void crossedRangesOfPrices() {
+        DiscreteAuction auction = new DiscreteAuction();
+        auction.addBuyOrder(new Order("1", "100"));
+        auction.addBuyOrder(new Order("10", "100"));
+        auction.addBuyOrder(new Order("20", "100"));
+        auction.addBuyOrder(new Order("50", "100"));
+        auction.addSellOrder(new Order("20", "100"));
+        auction.addSellOrder(new Order("50", "100"));
+        auction.addSellOrder(new Order("80", "100"));
+        auction.addSellOrder(new Order("100", "100"));
+        DealService dealService = auction.exchange();
+        assertEquals(new BigDecimal("35.00"), dealService.getOptimalPrice());
+        assertEquals(new BigInteger("100"), dealService.getMaxAmount());
+    }
+
+
+    @Test
     public void over9000() {
         DiscreteAuction auction = new DiscreteAuction();
         for(int i = 0; i < DiscreteAuction.ORDERS_LIMIT;) {
