@@ -3,7 +3,7 @@ package testcase.exchange;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
-import testcase.exchange.error.OrderAmountRangeException;
+import testcase.exchange.error.AmountRangeException;
 import testcase.exchange.error.PriceFormatException;
 import testcase.exchange.error.PriceRangeException;
 
@@ -54,13 +54,13 @@ public class OrderSpec {
 
     @Test
     public void amountShouldBeLessThan1000() {
-        thrown.expect(OrderAmountRangeException.class);
+        thrown.expect(AmountRangeException.class);
         new Order("1", "1001");
     }
 
     @Test
     public void amountShouldBeMoreThan1() {
-        thrown.expect(OrderAmountRangeException.class);
+        thrown.expect(AmountRangeException.class);
         new Order("1", "0");
     }
 }

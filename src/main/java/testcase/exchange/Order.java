@@ -2,8 +2,8 @@ package testcase.exchange;
 
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
-import testcase.exchange.error.OrderAmountRangeException;
-import testcase.exchange.error.OrderFormatException;
+import testcase.exchange.error.AmountRangeException;
+import testcase.exchange.error.AmountFormatException;
 import testcase.exchange.error.PriceFormatException;
 import testcase.exchange.error.PriceRangeException;
 
@@ -25,26 +25,26 @@ public class Order {
         try {
             this.price = new BigDecimal(price);
         } catch (NumberFormatException e) {
-            throw new PriceFormatException();
+            throw new PriceFormatException(price);
         }
         try {
             this.amount = new BigInteger(amount);
         } catch (NumberFormatException e) {
-            throw new OrderFormatException();
+            throw new AmountFormatException(amount);
         }
 
         if(this.price.scale() > 2) {
-            throw new PriceFormatException();
+            throw new PriceFormatException(price);
         } else {
             this.price = this.price.setScale(2);
         }
 
         if(this.price.compareTo(MAX_PRICE) > 0 || this.price.compareTo(MIN_PRICE) < 0) {
-            throw new PriceRangeException();
+            throw new PriceRangeException(this.price);
         }
 
         if(this.amount.compareTo(MAX_AMOUNT) > 0 || this.amount.compareTo(MIN_AMOUNT) < 0) {
-            throw new OrderAmountRangeException();
+            throw new AmountRangeException(this.amount);
         }
     }
 }
